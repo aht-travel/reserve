@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#073b45">
+<title>Reserve Your Spot — Live Travel Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#073b45;--navy2:#0b5962;--teal:#12a9a5;--mint:#e8f8f5;
+  --ink:#17333b;--muted:#637b82;--line:#dce9e9;--gold:#f6c85f;
+  --coral:#ef765c;--white:#fff;--shadow:0 18px 55px rgba(7,59,69,.12)
+}
+*{box-sizing:border-box}
+body{margin:0;padding:28px 16px 48px;font-family:"DM Sans",sans-serif;color:var(--ink);
+  background:radial-gradient(circle at 5% 0%,#d9f4ef 0,transparent 32%),
+  radial-gradient(circle at 100% 20%,#ffeddf 0,transparent 30%),#f5f9f8;min-height:100vh}
+button,input,select{font:inherit}
+.wrap{max-width:900px;margin:0 auto;position:relative}
+.topline{display:flex;justify-content:center;margin-bottom:13px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:99px;
+  color:var(--navy2);background:#e0f4f1;border:1px solid #c5e8e3;font-size:.72rem;
+  font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+.hero{text-align:center;margin:0 auto 22px;max-width:740px}
+h1,h2,h3,h4{font-family:Manrope,sans-serif}
+h1{font-size:clamp(2rem,5vw,3.15rem);line-height:1.08;letter-spacing:-1.5px;margin:0;color:var(--navy)}
+.hero p{font-size:1rem;line-height:1.6;color:var(--muted);margin:12px auto 15px;max-width:650px}
+.trust-row{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.trust-pill{font-size:.78rem;font-weight:800;border-radius:99px;padding:8px 12px;background:#fff;
+  border:1px solid var(--line);color:var(--navy2)}
+.trust-pill strong{color:#087c69}
+.gift-section{margin:22px 0 18px}
+.section-kicker{text-align:center;color:var(--muted);font-size:.73rem;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px}
+.gifts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+.gift{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:15px;padding:12px 10px;
+  min-height:118px;box-shadow:0 5px 18px rgba(7,59,69,.045)}
+.gift-icon{font-size:1.35rem;margin-bottom:5px}
+.gift h3{font-size:.83rem;margin:0 0 4px;color:var(--navy)}
+.gift p{font-size:.7rem;line-height:1.35;color:var(--muted);margin:0}
+.gift small{display:block;margin-top:5px;color:#087c69;font-size:.65rem;font-weight:800;line-height:1.3}
+.card{background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.9);border-radius:23px;
+  padding:clamp(19px,4vw,31px);box-shadow:var(--shadow)}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
+.step-label{font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal)}
+.step-title{font:800 1.35rem Manrope,sans-serif;color:var(--navy);margin:4px 0 0}
+.duration{font-size:.72rem;font-weight:800;color:var(--navy2);background:var(--mint);padding:7px 10px;border-radius:99px;white-space:nowrap}
+.intro-note{font-size:.84rem;line-height:1.55;color:var(--muted);margin:-7px 0 17px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.field.full{grid-column:1/-1}
+label{display:block;font-size:.81rem;font-weight:800;margin:13px 0 6px;color:#29474e}
+input,select{width:100%;border:1.5px solid var(--line);border-radius:12px;background:#fbfdfd;
+  color:var(--ink);padding:12px 13px;outline:none;transition:.18s}
+input:focus,select:focus{border-color:var(--teal);box-shadow:0 0 0 4px rgba(18,169,165,.12);background:#fff}
+input::placeholder{color:#9aadb1}
+.hint{font-size:.7rem;color:var(--muted);margin-top:5px;line-height:1.4}
+.err{display:none;color:#c43d3d;font-size:.75rem;margin-top:5px}
+.date-chips{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.dchip{padding:12px;border:1.5px solid var(--line);border-radius:12px;background:#fbfdfd;text-align:center;cursor:pointer}
+.dchip .d1{font-weight:800;color:var(--navy);font-family:Manrope,sans-serif}
+.dchip .d2{font-size:.73rem;color:var(--muted);margin-top:3px}
+.dchip.sel{border-color:var(--teal);background:#eaf8f6;box-shadow:0 0 0 3px rgba(18,169,165,.1)}
+.dchip.locked{opacity:.4;cursor:not-allowed}
+.dchip.locked:after{content:"Unavailable";display:block;color:#b84e43;font-size:.65rem;font-weight:800;margin-top:4px}
+.time-area{margin-top:13px;padding:14px;border:1px solid var(--line);border-radius:15px;background:#f9fcfb}
+.time-area.hidden{display:none}
+.time-prompt{padding:11px 12px;background:#fff4d7;border:1px solid #f0d17b;border-radius:11px;
+  color:#64490f;font-size:.79rem;line-height:1.5;margin:10px 0 12px}
+.time-prompt strong{color:#553b05}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.slot{border:1.5px solid var(--line);border-radius:10px;padding:10px 4px;text-align:center;
+  background:#fff;cursor:pointer;font-size:.82rem;font-weight:700;color:var(--navy)}
+.slot:hover{border-color:var(--teal)}
+.slot.sel{background:var(--navy2);border-color:var(--navy2);color:#fff}
+.slot.past{opacity:.32;text-decoration:line-through;cursor:not-allowed}
+.tz-note{font-size:.72rem;color:var(--muted);margin-top:10px}
+.btn{width:100%;border:0;border-radius:13px;padding:14px 16px;margin-top:18px;cursor:pointer;
+  color:#fff;background:linear-gradient(100deg,var(--navy),var(--teal));font:800 .95rem Manrope,sans-serif;
+  box-shadow:0 9px 22px rgba(7,91,99,.2);transition:transform .15s,opacity .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+.btn.gold{background:linear-gradient(100deg,#b67a16,#e5b843);color:#302408;box-shadow:0 9px 22px rgba(181,130,32,.18)}
+.btn.light{background:#edf4f3;color:var(--navy);box-shadow:none}
+.modal-bg{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;
+  padding:12px;background:rgba(5,31,37,.64);backdrop-filter:blur(5px)}
+.modal-bg.hidden{display:none}
+.modal{width:min(100%,570px);max-height:calc(100dvh - 24px);overflow:auto;background:#fff;border-radius:21px;
+  padding:clamp(17px,4vw,25px);box-shadow:0 25px 80px rgba(0,0,0,.28);animation:pop .25s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+.modal h2{font-size:1.2rem;color:var(--navy);margin:0 0 10px}
+.modal p{font-size:.85rem;line-height:1.55;color:#526b72;margin:0 0 11px}
+.survey-panel{background:#f3f9fc;border:1px solid #c8e0f0;border-radius:15px;padding:15px;position:relative}
+.survey-badge{display:inline-block;background:#123765;color:#fff;border-radius:6px;padding:5px 8px;
+  font-size:.63rem;font-weight:800;letter-spacing:1px;margin-bottom:9px}
+.survey-panel h3{font:800 1.02rem Manrope,sans-serif;color:#123765;margin:0 0 8px}
+.income-explainer{background:#e4f3fb;border-radius:10px;padding:9px;margin:8px 0}
+.income-explainer strong{display:block;color:#123765;font-size:.79rem;margin-bottom:5px}
+.income-highlight{background:#fff0bd;border:1px solid #f5bd3e;color:#5c4210;border-radius:8px;
+  padding:9px;font-size:.8rem;font-weight:800;line-height:1.4}
+.income-guideline{background:#fff0bd;border:1px solid #f5bd3e;color:#5c4210;border-radius:8px;
+  padding:8px 9px;font-size:.8rem;font-weight:800;margin:8px 0}
+.survey-reassurance{background:#edf8f0;border:1px solid #a9e2ba;border-radius:9px;padding:9px;
+  color:#174c35!important;font-size:.75rem!important;margin:0!important}
+.bonus-panel{border:2px solid #efc45d;background:linear-gradient(125deg,#fff9e6,#fff0c2,#fff9e6);
+  border-radius:16px;padding:15px;margin-bottom:13px;animation:bonusGlow 2.4s ease-in-out infinite}
+@keyframes bonusGlow{0%,100%{box-shadow:0 0 0 rgba(238,183,58,0)}50%{box-shadow:0 0 18px rgba(238,183,58,.38)}}
+.bonus-label{display:inline-block;background:#f2c75d;color:#50380a;border-radius:99px;padding:5px 9px;
+  font-size:.65rem;font-weight:900;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
+.bonus-panel h3{font:800 1.1rem Manrope,sans-serif;color:#51390b;margin:0 0 6px}
+.bonus-panel p{color:#654e1c;margin:0;font-size:.82rem}
+.bonus-amount{font:800 1.5rem Manrope,sans-serif;color:#9a6410;display:block;margin-top:7px}
+.reserved-panel{background:#edf7f6;border:1px solid #cce8e4;border-radius:14px;padding:13px}
+.reserved-panel h3{font:800 .98rem Manrope,sans-serif;color:var(--navy);margin:0 0 6px}
+.reserved-panel p{margin:0 0 6px;font-size:.8rem}
+.reserved-panel p:last-child{margin-bottom:0}
+.confirm{max-width:680px;margin:0 auto;text-align:center}
+.confirm:not(.hidden){position:fixed;z-index:31;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:min(calc(100% - 24px),680px);max-height:calc(100dvh - 24px);overflow:auto}
+body:has(#successCard:not(.hidden))::before{content:"";position:fixed;inset:0;z-index:30;
+  background:rgba(5,31,37,.72);backdrop-filter:blur(5px)}
+.success-icon{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;margin:0 auto 12px;
+  background:linear-gradient(135deg,#18b987,#07835e);color:#fff;font-size:2rem;font-weight:800}
+.confirm h2{font-size:1.65rem;color:var(--navy);margin:0 0 5px}
+.confirm-sub{font-size:.86rem;color:var(--muted);margin:0 0 15px}
+.booking-time{background:#e9f8f5;border:1px solid #bce5dd;border-radius:15px;padding:15px;margin:13px 0}
+.booking-time .day{font-size:.76rem;color:#477078;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.booking-time .time{font:800 clamp(1.8rem,7vw,2.5rem) Manrope,sans-serif;color:var(--navy);margin:3px 0}
+.booking-time .zone{font-size:.83rem;font-weight:800;color:var(--teal)}
+.zoom-box{background:linear-gradient(130deg,#073b45,#0c7d80);border-radius:16px;padding:17px;color:#fff;margin:13px 0}
+.zoom-box .caption{font-size:.69rem;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;opacity:.8}
+.zoom-link{display:block;color:#ffe38c;font:800 clamp(1rem,4vw,1.35rem) Manrope,sans-serif;
+  text-decoration:none;word-break:break-word;margin:8px 0}
+.copy-row{display:flex;gap:8px;align-items:stretch}
+.copy-row button{border:0;border-radius:10px;padding:10px 14px;background:#ffe38c;color:#3d300e;
+  font-weight:900;cursor:pointer;white-space:nowrap}
+.copy-row .zoom-link{flex:1;text-align:left;margin:8px 0}
+.copy-hint{font-size:.7rem;opacity:.83;margin-top:7px}
+.confirm-note{font-size:.78rem;line-height:1.5;color:var(--muted)}
+.hidden{display:none!important}
+@media(max-width:650px){
+  body{padding:18px 11px 30px}
+  .gifts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gift:last-child{grid-column:1/-1}
+  .gift{min-height:100px;padding:10px}
+  .gift h3{font-size:.8rem}
+  .gift p{font-size:.69rem}
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .slots{grid-template-columns:repeat(3,1fr)}
+  .card{border-radius:18px}
+}
+@media(max-height:740px){
+  .modal{padding:15px}
+  .modal p{line-height:1.42;margin-bottom:8px}
+  .survey-panel{padding:12px}
+  .btn{margin-top:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="hero">
+    <div class="topline"><span class="eyebrow">✦ Live Travel Presentation</span></div>
+    <h1>Reserve Your Spot</h1>
+    <p>Join our approximately 45-minute online presentation as we introduce our travel booking platform and show you how to access travel deals with <strong>zero markups</strong>. Stay with us through the presentation and receive one exclusive travel certificate as our thank-you gift.</p>
+    <div class="trust-row">
+      <span class="trust-pill"><strong>✓ No fee</strong> to attend</span>
+      <span class="trust-pill"><strong>✓ Not</strong> a timeshare</span>
+      <span class="trust-pill">Approx. 45 minutes</span>
+    </div>
+  </header>
+
+  <section class="gift-section" aria-label="Available travel certificates">
+    <div class="section-kicker">Choose one preferred travel certificate</div>
+    <div class="gifts">
+      <article class="gift"><div class="gift-icon">🚢</div><h3>5D / 4N Cruise</h3><p>Certificate for two on select sailings.</p><small>Carnival · Royal Caribbean · Princess · Norwegian</small></article>
+      <article class="gift"><div class="gift-icon">🌺</div><h3>Hawaii</h3><p>6D / 5N hotel stay for two in Oahu.</p><small>Marriott · Hyatt · Hilton · IHG · Wyndham</small></article>
+      <article class="gift"><div class="gift-icon">🏨</div><h3>U.S. Hotel Stay</h3><p>4D / 3N stay for two at 35+ destinations.</p><small>Marriott · Hyatt · Hilton · IHG · Wyndham · Accor</small></article>
+      <article class="gift"><div class="gift-icon">🌴</div><h3>Mexico</h3><p>6D / 5N hotel getaway for two.</p><small>Accor · Hyatt · Hilton · Marriott · Wyndham</small></article>
+      <article class="gift"><div class="gift-icon">☀️</div><h3>Puerto Plata</h3><p>6D / 5N beachfront all-inclusive getaway.</p><small>Lifestyle Tropical Beach Resort &amp; Spa</small></article>
+    </div>
+  </section>
+
+  <section class="card" id="bookingCard">
+    <div class="card-head">
+      <div><div class="step-label">Your reservation</div><h2 class="step-title">Enter Your Details</h2></div>
+      <span class="duration">About 1 minute</span>
+    </div>
+    <p class="intro-note">Please enter your details exactly as you'd like us to use them for your presentation reservation and travel certificate.</p>
+
+    <form id="bookingForm" novalidate>
+      <div class="form-grid">
+        <div class="field">
+          <label for="firstName">First Name</label>
+          <input id="firstName" type="text" autocomplete="given-name" placeholder="First name" required>
+          <div class="err" id="e-firstName">Please enter your first name.</div>
+        </div>
+        <div class="field">
+          <label for="lastName">Last Name</label>
+          <input id="lastName" type="text" autocomplete="family-name" placeholder="Last name" required>
+          <div class="err" id="e-lastName">Please enter your last name.</div>
+        </div>
+        <div class="field">
+          <label for="phone">Mobile Number</label>
+          <input id="phone" type="tel" autocomplete="tel" placeholder="Your mobile number" required>
+          <div class="err" id="e-phone">Please enter a valid mobile number.</div>
+        </div>
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input id="email" type="email" autocomplete="email" placeholder="Where we'll send your Zoom details" required>
+          <div class="err" id="e-email">Please enter a valid email address.</div>
+        </div>
+        <div class="field full">
+          <label for="preferredCertificate">Your Preferred Travel Certificate</label>
+          <select id="preferredCertificate" required>
+            <option value="" disabled selected>Select one of the five travel gifts…</option>
+            <option value="5-day/4-night Cruise for 2">5-day/4-night Cruise for 2</option>
+            <option value="6-day/5-night Hawaii Hotel Stay Certificate for 2">6-day/5-night Hawaii Hotel Stay Certificate for 2</option>
+            <option value="4-day/3-night U.S. Hotel Stay Certificate for 2">4-day/3-night U.S. Hotel Stay Certificate for 2</option>
+            <option value="6-day/5-night Mexico Hotel Stay Certificate">6-day/5-night Mexico Hotel Stay Certificate</option>
+            <option value="6-day/5-night Puerto Plata getaway (Dominican Republic)">6-day/5-night Puerto Plata getaway (Dominican Republic)</option>
+          </select>
+          <div class="err" id="e-certificate">Please select your preferred travel certificate.</div>
+        </div>
+        <div class="field full">
+          <label>Choose Your Presentation Day</label>
+          <div class="date-chips" id="dateChips"></div>
+          <div class="err" id="e-date">Please choose an available day.</div>
+        </div>
+        <div class="field full">
+          <label for="timezone">Your Time Zone</label>
+          <select id="timezone" required>
+            <option value="" disabled selected>Select your time zone…</option>
+            <option>Eastern</option><option>Central</option><option>Mountain</option>
+            <option>Pacific</option><option>Hawaii</option><option>Vancouver</option>
+          </select>
+          <div class="err" id="e-timezone">Please select your time zone.</div>
+        </div>
+      </div>
+
+      <div id="slotArea" class="time-area hidden">
+        <label style="margin-top:0">Available Presentation Times <span id="tzEcho" style="font-weight:500;color:var(--muted)"></span></label>
+        <div class="time-prompt">⏰ <strong>Please select a time when you will be stationary—not driving or in a moving vehicle.</strong> For everyone's safety, our host cannot admit participants who are driving or in a moving vehicle.</div>
+        <div class="slots" id="slotGrid"></div>
+        <div class="tz-note">All times shown in <strong id="tzName"></strong> time.</div>
+        <div class="err" id="e-time">Please select an available presentation time.</div>
+      </div>
+      <button type="submit" class="btn" id="continueBtn">Continue to Guest Check-In →</button>
+    </form>
+  </section>
+
+  <section class="card confirm hidden" id="successCard">
+    <div class="success-icon">✓</div>
+    <h2>Congratulations! You're Booked.</h2>
+    <p class="confirm-sub">Your presentation spot has been reserved. Please save your session details below.</p>
+    <div class="booking-time">
+      <div class="day" id="confirmDate"></div>
+      <div class="time" id="confirmTime"></div>
+      <div class="zone" id="confirmZone"></div>
+    </div>
+    <div class="zoom-box">
+      <div class="caption">Save Your Zoom Access Link</div>
+      <div class="copy-row">
+        <a class="zoom-link" id="zoomLink" href="https://live.travelaht.com/aht" target="_blank" rel="noopener">live.travelaht.com/aht</a>
+        <button type="button" id="copyZoom">Copy</button>
+      </div>
+      <div class="copy-hint" id="copyHint">Keep this link handy so you can join at your reserved time.</div>
+    </div>
+    <p class="confirm-note">Your Zoom details will also be texted and emailed to you before the presentation. Please connect 5–10 minutes early. Remember: you must be stationary when joining.</p>
+    <button type="button" class="btn" id="doneBtn">Done</button>
+  </section>
+</main>
+
+<!-- Guest check-in survey heads-up -->
+<div class="modal-bg hidden" id="surveyModal" role="dialog" aria-modal="true" aria-labelledby="surveyTitle">
+  <div class="modal">
+    <div class="survey-panel">
+      <span class="survey-badge">QUICK CHECK-IN SURVEY</span>
+      <h3 id="surveyTitle">One Quick Step When You Join</h3>
+      <p>When you join, please complete a brief audience check-in. It may ask about U.S./Canadian residency and <strong>combined annual household income.</strong></p>
+      <div class="income-explainer">
+        <strong>What does combined annual household income mean?</strong>
+        <div class="income-highlight">The total annual income of you, your spouse or partner, and contributing family members living in the same household.</div>
+      </div>
+      <div class="income-guideline">Ideally, combined household income is above $50,000 per year.</div>
+      <p class="survey-reassurance">Your answers will <strong>not affect your eligibility to participate—you are already invited.</strong> These questions help us profile our audience for research purposes. You can review and answer them when the presentation opens; there's nothing else to fill out here.</p>
+    </div>
+    <button class="btn" type="button" id="understandBtn">I Understand</button>
+  </div>
+</div>
+
+<!-- Wide-screen bonus and final attendance reminder -->
+<div class="modal-bg hidden" id="finalModal" role="dialog" aria-modal="true" aria-labelledby="finalTitle">
+  <div class="modal">
+    <div class="bonus-panel">
+      <span class="bonus-label">A little extra for your viewing setup</span>
+      <h3 id="finalTitle">Enjoy the Presentation on a Bigger Screen</h3>
+      <p>We strongly recommend connecting on a <strong>laptop, desktop, or tablet</strong> for a clearer, more comfortable viewing experience.</p>
+      <span class="bonus-amount">＋ $100 Rewards Voucher</span>
+      <p style="margin-top:4px"><strong>Connect using a wide-screen device</strong> to receive this voucher on top of your selected Travel Certificate.</p>
+    </div>
+    <div class="reserved-panel">
+      <h3>We Reserved This Spot Just for You!</h3>
+      <p>We're looking forward to having you with us. Please make every effort to attend your selected session.</p>
+      <p><strong>Your presentation starts right on time.</strong> Connect 5–10 minutes before your scheduled time to avoid delays.</p>
+      <p><strong>Please note:</strong> A no-show may affect your eligibility for future offers like this.</p>
+      <p>Your Zoom details will be texted and emailed to you before the presentation.</p>
+      <p><strong>There is no fee to attend, and this is not a timeshare presentation.</strong></p>
+    </div>
+    <button class="btn gold" type="button" id="finalizeBtn">Finalize My Booking</button>
+    <p class="hint" style="text-align:center;margin-top:8px">By finalizing, you confirm that the selected time works for you.</p>
+  </div>
+</div>
+
+<script>
+/* ================= EXISTING BOOKING CONNECTION ================= */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMlNqoKjY8vemREi6K24GQTtQnK40ehPa91ZcAob-N3BDv9Wrq_PFxpdYpl2rpjMJPKg/exec";
+const ZOOM_URL = "https://live.travelaht.com/aht";
+
+/* Preserve the original timezone identifiers and Eastern-time slot schedule. */
+const ZONES = {
+  "Eastern":"America/New_York",
+  "Pacific":"America/Los_Angeles",
+  "Central":"America/Chicago",
+  "Mountain":"America/Denver",
+  "Hawaii":"Pacific/Honolulu",
+  "Vancouver":"America/Vancouver"
+};
+const WEEKDAY_SLOT_TIMES_ET = ["14:00","14:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00"];
+const WEEKEND_SLOT_TIMES_ET = ["14:00","14:20","14:40","17:00","17:40","18:20","18:40","19:00","19:20","19:40","20:00","20:20"];
+const TODAY_LOCK_ET = "20:15";
+const state = {
+  firstName:"",lastName:"",email:"",phone:"",
+  preferredCertificate:"",date:"",timezone:"",timeLabel:"",time24:"",timeET:"",device:""
+};
+const $ = id => document.getElementById(id);
+
+function zonedWallToUtc(dateStr,timeStr,tz){
+  const [y,mo,da]=dateStr.split("-").map(Number);
+  const [h,mi]=timeStr.split(":").map(Number);
+  const guess=Date.UTC(y,mo-1,da,h,mi);
+  const dtf=new Intl.DateTimeFormat("en-US",{timeZone:tz,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"});
+  const parts={};
+  dtf.formatToParts(new Date(guess)).forEach(p=>{if(p.type!=="literal")parts[p.type]=p.value});
+  const asUTC=Date.UTC(+parts.year,+parts.month-1,+parts.day,+parts.hour%24,+parts.minute,+parts.second);
+  return new Date(guess-(asUTC-guess));
+}
+function wallTimeIn(date,tz){
+  return new Intl.DateTimeFormat("en-US",{timeZone:tz,hour:"numeric",minute:"2-digit",hour12:true}).format(date);
+}
+function wallParts24(date,tz){
+  return new Intl.DateTimeFormat("en-US",{timeZone:tz,hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(date);
+}
+function nowInET(){
+  const d=new Date();
+  const dtf=new Intl.DateTimeFormat("en-US",{timeZone:"America/New_York",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
+  const p={};dtf.formatToParts(d).forEach(x=>{if(x.type!=="literal")p[x.type]=x.value});
+  return {date:`${p.year}-${p.month}-${p.day}`,mins:(+p.hour%24)*60+(+p.minute)};
+}
+function toMins(t){const [h,m]=t.split(":").map(Number);return h*60+m;}
+function isoLocal(d){const p=n=>String(n).padStart(2,"0");return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;}
+function prettyDate(dateStr){
+  const [y,m,d]=dateStr.split("-").map(Number);
+  return new Intl.DateTimeFormat("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}).format(new Date(y,m-1,d,12));
+}
+
+/* Today/Tomorrow selection: retain the existing 8:15 PM Eastern cutoff. */
+(function buildDateChips(){
+  const fmt=new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric"});
+  const today=new Date();const tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+1);
+  const et=nowInET();const pastCutoff=et.mins>=toMins(TODAY_LOCK_ET);
+  const box=$("dateChips");
+  function addChip(label,sub,value,locked){
+    const el=document.createElement("button");el.type="button";el.className="dchip";
+    el.innerHTML=`<div class="d1">${label}</div><div class="d2">${sub}</div>`;
+    if(locked){el.classList.add("locked");el.disabled=true;}
+    else{
+      el.addEventListener("click",()=>{
+        document.querySelectorAll(".dchip").forEach(x=>x.classList.remove("sel"));
+        el.classList.add("sel");state.date=value;$("e-date").style.display="none";
+        refreshSlots();
+      });
+    }
+    box.appendChild(el);return el;
+  }
+  if(!pastCutoff){
+    addChip("Today",fmt.format(today),isoLocal(today),false);
+  }else{
+    addChip("Today",fmt.format(today),isoLocal(today),true);
+    addChip("Tomorrow",fmt.format(tomorrow),isoLocal(tomorrow),false);
+  }
+})();
+
+function refreshSlots(){
+  const tzName=$("timezone").value;
+  if(!tzName||!state.date){$("slotArea").classList.add("hidden");return;}
+  state.timezone=tzName;state.timeLabel="";state.time24="";state.timeET="";
+  const grid=$("slotGrid");grid.innerHTML="";$("e-time").style.display="none";
+  const nowEt=nowInET();const isToday=state.date===nowEt.date;
+  const selectedDate=new Date(state.date+"T12:00:00");
+  const day=selectedDate.getDay();const isWeekend=day===0||day===6;
+  const slotTimes=isWeekend?WEEKEND_SLOT_TIMES_ET:WEEKDAY_SLOT_TIMES_ET;
+  slotTimes.forEach(et=>{
+    const d=zonedWallToUtc(state.date,et,"America/New_York");
+    const label=wallTimeIn(d,ZONES[tzName]);const t24=wallParts24(d,ZONES[tzName]);
+    const el=document.createElement("button");el.type="button";el.className="slot";el.textContent=label;
+    if(isToday&&toMins(et)<nowEt.mins){el.classList.add("past");el.disabled=true;}
+    else{
+      el.addEventListener("click",()=>{
+        document.querySelectorAll(".slot").forEach(s=>s.classList.remove("sel"));
+        el.classList.add("sel");state.timeLabel=label;state.time24=t24;state.timeET=et;
+        $("e-time").style.display="none";
+      });
+    }
+    grid.appendChild(el);
+  });
+  $("tzName").textContent=tzName;$("tzEcho").textContent=`(${tzName})`;
+  $("slotArea").classList.remove("hidden");
+}
+$("timezone").addEventListener("change",refreshSlots);
+
+/* Validate every required reservation field before showing the check-in notice. */
+$("bookingForm").addEventListener("submit",e=>{
+  e.preventDefault();let ok=true;
+  const show=(id,bad)=>{$(id).style.display=bad?"block":"none";if(bad)ok=false;};
+  const first=$("firstName").value.trim(),last=$("lastName").value.trim();
+  const email=$("email").value.trim(),phone=$("phone").value.trim();
+  const preferredCertificate=$("preferredCertificate").value;
+  show("e-firstName",!first);show("e-lastName",!last);
+  show("e-email",!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+  show("e-phone",phone.replace(/\D/g,"").length<7);
+  show("e-certificate",!preferredCertificate);show("e-date",!state.date);
+  show("e-timezone",!$("timezone").value);show("e-time",!state.timeLabel);
+  if(!state.date){show("e-date",true);}
+  if(!ok)return;
+  Object.assign(state,{firstName:first,lastName:last,email,phone,preferredCertificate,timezone:$("timezone").value});
+  $("surveyModal").classList.remove("hidden");
+});
+
+/* Survey heads-up: one I Understand button, no checkbox. */
+$("understandBtn").addEventListener("click",()=>{
+  $("surveyModal").classList.add("hidden");
+  $("finalModal").classList.remove("hidden");
+});
+
+/* Submit once, only after the participant explicitly finalizes the reservation. */
+let submissionStarted=false;
+function saveToSheet(){
+  const payload={
+    firstName:state.firstName,
+    lastName:state.lastName,
+    email:state.email,
+    phone:state.phone,
+    preferredCertificate:state.preferredCertificate,
+    date:state.date,
+    timezone:state.timezone,
+    time:state.timeLabel,
+    device:state.device || "Not specified",
+    timeET:state.timeET || ""
+  };
+  return fetch(SCRIPT_URL,{
+    method:"POST",mode:"no-cors",
+    headers:{"Content-Type":"application/x-www-form-urlencoded"},
+    body:new URLSearchParams(payload)
+  }).catch(()=>{});
+}
+$("finalizeBtn").addEventListener("click",async()=>{
+  if(submissionStarted)return;
+  submissionStarted=true;
+  $("finalizeBtn").disabled=true;
+  $("finalizeBtn").textContent="Finalizing…";
+  /* Wide-screen is recommended, not falsely recorded as a selected device. */
+  await saveToSheet();
+  $("finalModal").classList.add("hidden");
+  $("bookingCard").classList.add("hidden");
+  $("successCard").classList.remove("hidden");
+  $("confirmDate").textContent=prettyDate(state.date);
+  $("confirmTime").textContent=state.timeLabel;
+  $("confirmZone").textContent=state.timezone+" Time";
+  $("zoomLink").href=ZOOM_URL;
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+
+$("copyZoom").addEventListener("click",async()=>{
+  try{
+    await navigator.clipboard.writeText(ZOOM_URL);
+    $("copyHint").textContent="Copied! Save this link for your presentation.";
+    $("copyZoom").textContent="Copied";
+  }catch(err){
+    const temp=document.createElement("textarea");temp.value=ZOOM_URL;
+    document.body.appendChild(temp);temp.select();
+    try{document.execCommand("copy");$("copyHint").textContent="Link copied. Save it for your presentation.";$("copyZoom").textContent="Copied";}
+    catch(e){$("copyHint").textContent="Please copy the link above: "+ZOOM_URL;}
+    temp.remove();
+  }
+});
+$("doneBtn").addEventListener("click",()=>{
+  $("successCard").classList.add("hidden");
+  $("bookingCard").classList.add("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+</script>
+</body>
+</html>
