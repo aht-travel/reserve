@@ -331,9 +331,19 @@ const ZONES = {
   "Hawaii":"Pacific/Honolulu",
   "Vancouver":"America/Vancouver"
 };
-const WEEKDAY_SLOT_TIMES_ET = ["14:00","14:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00"];
-const WEEKEND_SLOT_TIMES_ET = ["14:00","14:20","14:40","17:00","17:40","18:20","18:40","19:00","19:20","19:40","20:00","20:20"];
-const TODAY_LOCK_ET = "20:15";
+/* Standard Time schedule after the November DST fallback.
+   The same 30-minute schedule applies every day, including weekends:
+   1:00 PM through 7:00 PM Eastern.
+   Each displayed local time is converted using the selected IANA timezone. */
+const WEEKDAY_SLOT_TIMES_ET = [
+  "13:00","13:30","14:00","14:30","15:00","15:30","16:00",
+  "16:30","17:00","17:30","18:00","18:30","19:00"
+];
+const WEEKEND_SLOT_TIMES_ET = [
+  "13:00","13:30","14:00","14:30","15:00","15:30","16:00",
+  "16:30","17:00","17:30","18:00","18:30","19:00"
+];
+const TODAY_LOCK_ET = "19:15";
 const state = {
   firstName:"",lastName:"",email:"",phone:"",
   preferredCertificate:"",date:"",timezone:"",timeLabel:"",time24:"",timeET:"",device:""
@@ -369,7 +379,7 @@ function prettyDate(dateStr){
   return new Intl.DateTimeFormat("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}).format(new Date(y,m-1,d,12));
 }
 
-/* Today/Tomorrow selection: retain the existing 8:15 PM Eastern cutoff. */
+/* Today/Tomorrow selection: cutoff is 7:15 PM Eastern, 15 minutes after the final 7:00 PM slot. */
 (function buildDateChips(){
   const fmt=new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric"});
   const today=new Date();const tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+1);
